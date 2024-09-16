@@ -11,6 +11,7 @@ interface loginParams {
   password: string;
 }
 
+/* account/authentication related api's/methods */
 async function createAccount({
   email,
   password,
