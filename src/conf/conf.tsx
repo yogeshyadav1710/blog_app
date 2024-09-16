@@ -1,4 +1,11 @@
-const conf = {
+interface AppwriteConfig {
+  appwriteUrl: string;
+  appwriteProjectID: string;
+  appwriteDatabaseID: string;
+  appwriteCollectionID: string;
+  appwriteBucketID: string;
+}
+const conf: AppwriteConfig = {
   appwriteUrl: String(import.meta.env.VITE_APPWRITE_URL),
   appwriteProjectID: String(import.meta.env.VITE_APPWRITE_PROJECT_ID),
   appwriteDatabaseID: String(import.meta.env.VITE_APPWRITE_DATABSE_ID),
