@@ -1,5 +1,6 @@
 import services from "./auth";
 import conf from "../conf/conf";
+import { Query } from "appwrite";
 
 interface createPostParams {
   title: string;
@@ -9,14 +10,13 @@ interface createPostParams {
   status: string;
   userId: string;
 }
-
 interface UpdatePostParams {
   title: string;
   content: string;
   featuredImage: string;
   status: string;
 }
-
+/* function to create a new blog */
 async function createPost({
   title,
   slug,
@@ -42,7 +42,7 @@ async function createPost({
     console.log("Appwrite service :: createPost :: error", error);
   }
 }
-
+/* function to update the post*/
 async function updatePost(
   slug: string,
   { title, content, featuredImage, status }: UpdatePostParams
@@ -63,7 +63,6 @@ async function updatePost(
     console.log("Appwrite service :: updatePost :: error", error);
   }
 }
-
 async function deletePost(slug: string): Promise<any> {
   try {
     await services.databases.deleteDocument(
@@ -78,9 +77,7 @@ async function deletePost(slug: string): Promise<any> {
     return false; //  if document did not deleted
   }
 }
-
 /* to get one post */
-
 async function getPost(slug: string): Promise<any> {
   try {
     return await services.databases.getDocument(
@@ -93,4 +90,22 @@ async function getPost(slug: string): Promise<any> {
     return false;
   }
 }
-export { createPost, updatePost, deletePost };
+
+/* function to get list of blog with active status using queries*/
+async function getPosts(
+  queries = [Query.equal("status", "active")]
+): Promise<any> {
+  try {
+    return await services.databases.listDocuments(
+      conf.appwriteDatabaseID,
+      conf.appwriteCollectionID,
+      queries
+    );
+  } catch (error) {
+    console.log("Appwrite Service :: getPosts :: error", error);
+    return false;
+  }
+}
+
+
+export { createPost, updatePost, deletePost, getPost, getPosts };
